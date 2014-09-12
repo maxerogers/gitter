@@ -32,8 +32,9 @@ get '/login' do
 end
 
 get '/auth/twitter/callback' do
-  env['omniauth.auth'] ? session[:admin] = true : halt(401,'Not Authorized')
-  env['omniauth.auth']
+  session[:admin] = true
+  session[:username] = env['omniauth.auth']['info']['name']
+  "<h1>Hi #{session[:username]}!</h1>"
 end
 
 get '/auth/failure' do
