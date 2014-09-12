@@ -42,6 +42,7 @@ get '/auth/twitter/callback' do
     config.access_token        = env['omniauth.auth'][:credentials][:token]
     config.access_token_secret = env['omniauth.auth'][:credentials][:secret]
   end
+  session[:client].update("I'm tweeting with @gem!")
   "#{env['omniauth.auth']}<br><br>#{env['omniauth.auth'][:credentials][:token]}<br>#{env['omniauth.auth'][:credentials][:secret]}"
 end
 
