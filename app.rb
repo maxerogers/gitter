@@ -1,11 +1,12 @@
 require "sinatra"
 require 'omniauth-twitter'
 require "./models.rb"
+
 #setup
 configure do
   enable :sessions
   use OmniAuth::Builder do
-    provider :twitter, ENV['p2xojaAqxCshYaAraH4otANCr'], ENV['TKzK7CRkr71oLRa102V6DF5VQY5BAltvqrkHZWxhXouybcNAxZ']
+    provider :twitter, 'p2xojaAqxCshYaAraH4otANCr', 'TKzK7CRkr71oLRa102V6DF5VQY5BAltvqrkHZWxhXouybcNAxZ'
   end
 end
 
@@ -25,8 +26,16 @@ get '/private' do
 end
 
 get '/login' do
-  session[:admin] = true
+  redirect to("/auth/twitter")
+end
+
+get '/auth/twitter/callback' do
+  env['omniauth.auth'] ? session[:admin] = true : halt(401,'Not Authorized')
   "You are now logged in"
+end
+
+get '/auth/failure' do
+  params[:message]
 end
 
 get '/logout' do
