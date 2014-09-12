@@ -34,7 +34,7 @@ end
 get '/auth/twitter/callback' do
   session[:admin] = true
   session[:username] = env['omniauth.auth']['info']['name']
-  env['omniauth.auth']
+  env['omniauth.auth'].to_s
 end
 
 get '/auth/failure' do
