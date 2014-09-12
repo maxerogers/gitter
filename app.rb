@@ -1,9 +1,14 @@
 require "sinatra"
+require 'omniauth-twitter'
 require "./models.rb"
 #setup
-enable :sessions
-set :session_secret, "My session secret"
+configure do
+  enable :sessions
+  use OmniAuth::Builder do
+    provider :twitter, ENV['CONSUMER_KEY'], ENV['CONSUMER_SECRET']
+  end
+end
 
 get "/" do
-  "hello I am gitter"
+  erb :index
 end
