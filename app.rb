@@ -34,7 +34,14 @@ end
 get '/auth/twitter/callback' do
   session[:admin] = true
   session[:username] = env['omniauth.auth']['info']['name']
-  env['omniauth.auth'].to_s
+
+  session[:client] = Twitter::REST::Client.new do |config|
+    config.consumer_key        = "p2xojaAqxCshYaAraH4otANCr"
+    config.consumer_secret     = "TKzK7CRkr71oLRa102V6DF5VQY5BAltvqrkHZWxhXouybcNAxZ"
+    config.access_token        = env['omniauth.auth'][:credentials][:token]
+    config.access_token_secret = env['omniauth.auth'][:credentials][:secret]
+  end
+  "#{env['omniauth.auth']}<br><br>#{env['omniauth.auth'][:credentials][:token]}<br>#{env['omniauth.auth'][:credentials][:secret]}"
 end
 
 get '/auth/failure' do
