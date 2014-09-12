@@ -10,35 +10,26 @@ configure do
 end
 
 helpers do
-  # define a current_user method, so we can be sure if an user is authenticated
-  def current_user
-    !session[:uid].nil?
+  def admin?
+    session[:admin]
   end
 end
 
-before do
-  # we do not want to redirect to twitter when the path info starts
-  # with /auth/
-  pass if request.path_info =~ /^\/auth\//
-
-  # /auth/twitter is captured by omniauth:
-  # when the path info matches /auth/twitter, omniauth will redirect to twitter
-  redirect to('/auth/twitter') unless current_user
+get '/public' do
+  "This is the public page - everybody is welcome!"
 end
 
-get '/auth/twitter/callback' do
-  # probably you will need to create a user in the database too...
-  session[:uid] = env['omniauth.auth']['uid']
-  # this is the main endpoint to your application
-  puts "#{sesssion[:uid]}"
-  redirect to('/')
+get '/private' do
+  halt(401,'Not Authorized') unless admin?
+  "This is the private page - members only"
 end
 
-get '/auth/failure' do
-  # omniauth redirects to /auth/failure when it encounters a problem
-  # so you can implement this as you please
+get '/login' do
+  session[:admin] = true
+  "You are now logged in"
 end
 
-get "/" do
-  erb :index
+get '/logout' do
+  session[:admin] = nil
+  "You are now logged out"
 end
