@@ -16,6 +16,8 @@ helpers do
   end
 end
 
+
+
 get '/public' do
   "This is the public page - everybody is welcome!"
 end
@@ -31,7 +33,7 @@ end
 
 get '/auth/twitter/callback' do
   env['omniauth.auth'] ? session[:admin] = true : halt(401,'Not Authorized')
-  "You are now logged in"
+  env['omniauth.auth']
 end
 
 get '/auth/failure' do
