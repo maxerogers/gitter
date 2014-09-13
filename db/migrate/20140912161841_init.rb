@@ -4,6 +4,8 @@ class Init < ActiveRecord::Migration
       t.string :name
       t.integer :twitter_id
       t.string  :github_path
+      t.string :twitter_token
+      t.string :twitter_secret
     end
   end
 end
