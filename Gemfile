@@ -7,7 +7,9 @@ gem "twitter"
 gem "github_api"
 gem "bcrypt"
 gem 'omniauth-twitter'
-
+gem 'httparty'
+gem 'json'
+gem 'thin'
 
 group :development do
 	gem 'rerun'
