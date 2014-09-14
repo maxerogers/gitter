@@ -10,6 +10,7 @@ gem 'omniauth-twitter'
 gem 'httparty'
 gem 'json'
 gem 'thin'
+gem 'rest_client'
 
 group :development do
 	gem 'rerun'
