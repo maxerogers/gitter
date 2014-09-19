@@ -1,6 +1,7 @@
 require 'rubygems'
 require "sinatra"
 require 'omniauth-twitter'
+require 'omniauth-github'
 require 'twitter'
 require 'github_api'
 require 'httparty'
@@ -16,7 +17,9 @@ configure do
   enable :sessions
   set :session_secret, "My session secret"
   use OmniAuth::Builder do
+    #I know this bad form but I haven't deployed yet. So Shhhhhhhh
     provider :twitter, 'p2xojaAqxCshYaAraH4otANCr', 'TKzK7CRkr71oLRa102V6DF5VQY5BAltvqrkHZWxhXouybcNAxZ'
+    provider :github, '5394720ddae7b4107128', 'e756c8c818b165c5dec5a5a2f88982e0493bd905'
   end
 end
 
@@ -27,15 +30,13 @@ helpers do
 end
 
 get '/git' do
-  response = HTTParty.get('https://api.github.com/repos/honeycodedbear/gitter/commits?since=2014-09-01T12:00:000', headers: {"User-Agent" => 'Git Twit'})
+  response = HTTParty.get('https://api.github.com/repos/honeycodedbear/gitter/commits?since=2014-08-01T12:00:000', headers: {"User-Agent" => 'Git Twit'})
   #puts response.body, response.code, response.message, response.headers.inspect
   json = JSON.parse(response.body)
   puts json[0]
-  "
-  Commit Sha: #{json[0]["sha"]},<br>
-  Commit Message: #{json[0]["commit"]["message"]} <br>
-  Commit Time:#{json[0]["commit"]["author"]["date"]} <br>
-  #{json[0]}"
+
+  "#{response.body}"
+
 end
 
 get '/public' do
@@ -49,6 +50,14 @@ end
 
 get '/login' do
   redirect to("/auth/twitter")
+end
+
+get '/auth/github/callback' do
+    env['omniauth.auth']
+end
+
+get '/github_test' do
+  "RWAR"
 end
 
 get '/auth/twitter/callback' do
@@ -76,16 +85,29 @@ end
 #Working Thread
 $sum = 0
 
-Thread.new do # trivial example work thread
+thr = Thread.new do # trivial example work thread
   while true do
      sleep 0.12
      $sum += 1
+     #str = RestClient.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c")
+     str = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c", headers: {"User-Agent" => 'Git Twit'})
+     puts $sum
+     puts str
   end
 end
+thr.join
 
 get '/' do
   "Testing background work thread: sum is #{$sum}"
 end
 
+get "/meta_data" do
+  erb :meta_data
+end
+#Compare commits
+#curl "https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c"
+#Could read through the number of lines there are and also get the file extension.
+#Then we could collect meta data on languages/frameworks this way
+#Look for +numbers's. This be an easy way to find the data. Then I should be able to look at all of the file extensions and give it loads of fun data.
 #Get commits per hour
 #RestClient.get("https://api.github.com/repos/honeycodedbear/gitter/stats/punch_card")

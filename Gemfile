@@ -11,6 +11,7 @@ gem 'httparty'
 gem 'json'
 gem 'thin'
 gem 'rest_client'
+gem 'omniauth-github'
 
 group :development do
 	gem 'rerun'
