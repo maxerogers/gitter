@@ -6,9 +6,6 @@ h1, h2, h3, h4 {
 p {
     font-family: 'Arimo', sans-serif;
 }
-html {
-    background-color: #02A153;
-}
 .container a{
     text-decoration: none;
 }
@@ -52,11 +49,9 @@ html {
     background-color: #FFFFFF;
     padding-top: 20px;
 }
-
-.middle .container p{
-    color: #000000;
-    font-size: 18px;
-    text-align: left;
+.middle .container button img{
+    max-width: 10px;
+    height: auto;
 }
 
 .navbar-nav li a {
@@ -75,20 +70,28 @@ html {
 }
 
 .bottom {
+    background-color: #275C76;
     margin-top: 30px;
-    background-color: #02A153;
+    height: 150px;
 }
 .bottom .container {
-    background-color: #373737;
-    min-height: 150px;
+    text-align: center;
+    height: 150px;
+    width: 100%;
+    display: table;
+    position:absolute;
 }
 .bottom .container h1 {
     color: #A09F9F;
 }
 .bottom .container p {
-    font-size: 20px;
-    color: #A09F9F;
+    font-size: 30px;
+    color: #FFFFFF;
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'Comfortaa', cursive;
 }
+
 .navbar-toggle {
     color: #009b9b;
     font-size: 32px;
