@@ -10,7 +10,6 @@ require "./models.rb"
 require './config/environments' #database configuration
 require 'thin'
 require 'rest_client'
-require 'rufus-scheduler'
 
 #setup
 configure do
@@ -20,7 +19,7 @@ configure do
   use OmniAuth::Builder do
     #I know this bad form but I haven't deployed yet. So Shhhhhhhh
     provider :twitter, 'p2xojaAqxCshYaAraH4otANCr', 'TKzK7CRkr71oLRa102V6DF5VQY5BAltvqrkHZWxhXouybcNAxZ'
-    provider :github, '5394720ddae7b4107128', 'e756c8c818b165c5dec5a5a2f88982e0493bd905'
+    provider :github, '5394720ddae7b4107128', '17ce0361111c4eaf2746e89de451aa0bc804951a'
   end
 end
 
@@ -127,15 +126,30 @@ end
 #json["files"][i]["filename"]
 #json["files"][i]["additions"]
 
-if false
-scheduler = Rufus::Scheduler.new
-scheduler.every '3s' do
-  # do something every 3 hours
-  puts "I am scheduled event"
-  #response = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c")
-  #json = JSON.parse(repsonse.body)
-  #json["files"][i]["filename"]
-  #json["files"][i]["additions"]
+def reload_server
+  client_id = '5394720ddae7b4107128'
+  client_secret = '17ce0361111c4eaf2746e89de451aa0bc804951a'
+  api_path = 'https://api.github.com/repos/'
+  str = ""
+  r = Repo.last
+    repo_path = r.github_path.partition("https://github.com/").last
+    path = "#{api_path}#{repo_path}/commits?client_id=#{client_id}&cliend_secret=#{client_secret}"
+    response = HTTParty.get(path, headers: {"User-Agent" => 'Git Twit'})
+    json = JSON.parse(response.body)
+    #str += "#{path} <br>"
+    latest_sha = json[0]["sha"]
+    #str += "#{json[0]} <br>"
+    str += "Last Known Sha: #{r.last_sha} <br> Latest sha: #{latest_sha} <br>"
+    response = HTTParty.get("#{api_path}#{repo_path}/compare/#{r.last_sha}...#{latest_sha}?client_id=#{client_id}&cliend_secret=#{client_secret}", headers: {"User-Agent" => 'Git Twit'})
+    str += "#{response.body} <br>"
+    #json = JSON.parse(reponse.body)
+    #str += "#{json}"
+    #json = JSON.parse(reponse.body)
+    #str += "#{json["files"][i]["filename"]} <br>"
+    #str += "#{json["files"][i]["additions"]} <br>"
+  str
 end
-scheduler.join
+
+get "/reload_server" do
+  reload_server
 end
