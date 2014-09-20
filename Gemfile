@@ -12,6 +12,7 @@ gem 'json'
 gem 'thin'
 gem 'rest_client'
 gem 'omniauth-github'
+gem 'rufus-scheduler'
 
 group :development do
 	gem 'rerun'

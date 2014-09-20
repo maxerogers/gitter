@@ -10,6 +10,7 @@ require "./models.rb"
 require './config/environments' #database configuration
 require 'thin'
 require 'rest_client'
+require 'rufus-scheduler'
 
 #setup
 configure do
@@ -71,6 +72,7 @@ get '/auth/twitter/callback' do
   User.new
   client.update("I'm tweeting with @gem!")
   "#{env['omniauth.auth']}<br><br>#{env['omniauth.auth'][:credentials][:token]}<br>#{env['omniauth.auth'][:credentials][:secret]}<br>#{env['omniauth.auth'][:uid]}"
+  erb :registered
 end
 
 get '/auth/failure' do
@@ -82,28 +84,35 @@ get '/logout' do
   "You are now logged out"
 end
 
-#Working Thread
-$sum = 0
-
-thr = Thread.new do # trivial example work thread
-  while true do
-     sleep 0.12
-     $sum += 1
-     #str = RestClient.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c")
-     str = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c", headers: {"User-Agent" => 'Git Twit'})
-     puts $sum
-     puts str
-  end
+get '/blog' do
+  erb :blog
 end
-thr.join
+
+post '/register' do
+    @u = User.new
+    @u.team_id = params[:team_id]
+    @u.github_path = params[:github_path]
+    @u.save
+    @r = Repo.new
+    @r.github_path = @u.github_path
+    @r.lines = 0
+    response = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/commits?client_id=5394720ddae7b4107128&client_secret=e756c8c818b165c5dec5a5a2f88982e0493bd905", headers: {"User-Agent" => 'Git Twit'})
+    json = JSON.parse(response.body)
+    @r.last_sha = json[0]["sha"]
+    @r.save
+    erb :registered
+end
 
 get '/' do
-  "Testing background work thread: sum is #{$sum}"
+  erb :index
 end
 
 get "/meta_data" do
   erb :meta_data
 end
+
+#Working Thread
+
 #Compare commits
 #curl "https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c"
 #Could read through the number of lines there are and also get the file extension.
@@ -111,3 +120,22 @@ end
 #Look for +numbers's. This be an easy way to find the data. Then I should be able to look at all of the file extensions and give it loads of fun data.
 #Get commits per hour
 #RestClient.get("https://api.github.com/repos/honeycodedbear/gitter/stats/punch_card")
+
+#Using git api compare
+#response = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c")
+#json = JSON.parse(repsonse.body)
+#json["files"][i]["filename"]
+#json["files"][i]["additions"]
+
+if false
+scheduler = Rufus::Scheduler.new
+scheduler.every '3s' do
+  # do something every 3 hours
+  puts "I am scheduled event"
+  #response = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c")
+  #json = JSON.parse(repsonse.body)
+  #json["files"][i]["filename"]
+  #json["files"][i]["additions"]
+end
+scheduler.join
+end

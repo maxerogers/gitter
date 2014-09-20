@@ -13,3 +13,8 @@ class User < ActiveRecord::Base
     self.password_hash = @password
   end
 end
+
+class Repo < ActiveRecord::Base
+end
+class Langauge < ActiveRecord::Base
+end

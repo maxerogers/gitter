@@ -110,6 +110,8 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
+    rufus-scheduler (3.0.9)
+      tzinfo
     simple_oauth (0.2.0)
     sinatra (1.4.5)
       rack (~> 1.4)
@@ -160,6 +162,7 @@ DEPENDENCIES
   rake
   rerun
   rest_client
+  rufus-scheduler
   sinatra
   sinatra-activerecord
   sqlite3

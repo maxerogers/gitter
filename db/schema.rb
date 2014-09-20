@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140912161841) do
+ActiveRecord::Schema.define(version: 20140919004206) do
+
+  create_table "langauges", force: true do |t|
+    t.string  "name"
+    t.integer "number_of_files"
+    t.integer "number_of_lines"
+    t.string  "file_extensions"
+  end
+
+  create_table "repos", force: true do |t|
+    t.string  "github_path"
+    t.string  "last_sha"
+    t.integer "lines"
+  end
 
   create_table "users", force: true do |t|
     t.string  "name"
@@ -19,6 +32,7 @@ ActiveRecord::Schema.define(version: 20140912161841) do
     t.string  "github_path"
     t.string  "twitter_token"
     t.string  "twitter_secret"
+    t.integer "team_id"
   end
 
 end

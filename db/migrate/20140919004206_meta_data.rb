@@ -1,11 +1,11 @@
 class MetaData < ActiveRecord::Migration
   def change
-    create_table :repos do
+    create_table :repos do |t|
       t.string :github_path
       t.string :last_sha
       t.integer :lines
     end
-    create_table :langauges do
+    create_table :langauges do |t|
       t.string :name
       t.integer :number_of_files
       t.integer :number_of_lines
@@ -13,5 +13,7 @@ class MetaData < ActiveRecord::Migration
       #store as seperate by commas or try jsons. Look up String to array in ruby
       #example Ruby: .rb, .ru, .erb, .slim, .haml
     end
+
+    add_column :users, :team_id, :integer
   end
 end
