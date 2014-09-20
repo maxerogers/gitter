@@ -132,7 +132,9 @@ def reload_server
   api_path = 'https://api.github.com/repos/'
   str = ""
   r = Repo.last
-  #HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c?client_id=5394720ddae7b4107128&client_secret=96a96f7a666b4dfa0708a881c56edac9c702dbb0", headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
+    #FINALLY GOT THIS TO WORK!!!! PRAISE CAT GOD!!!
+    #curl -i 'https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c?client_id=5394720ddae7b4107128&client_secret=96a96f7a666b4dfa0708a881c56edac9c702dbb0'
+    #HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c?client_id=5394720ddae7b4107128&client_secret=96a96f7a666b4dfa0708a881c56edac9c702dbb0", headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
     repo_path = r.github_path.partition("https://github.com/").last
     path = "#{api_path}#{repo_path}/commits?client_id=#{client_id}&cliend_secret=#{client_secret}"
     response = HTTParty.get(path, headers: {"User-Agent" => 'Git Twit'})
