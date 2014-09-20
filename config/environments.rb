@@ -1,4 +1,3 @@
-require 'sqlite3'
 #These Settings Establish the Proper Database Connection for Heroku Postgres
 #The environment variable DATABASE_URL should be in the following format:
 # => postgres://{user}:{password}@{host}:{port}/path
