@@ -1,0 +1,110 @@
+@import url(http://fonts.googleapis.com/css?family=Arimo:400,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Comfortaa);
+h1, h2, h3, h4 {
+    font-family: 'Comfortaa', cursive;
+}
+p {
+    font-family: 'Arimo', sans-serif;
+}
+.container a{
+    text-decoration: none;
+}
+
+.top{
+    background-color: #FFFFFF;
+}
+
+.banner {
+    width:100%;
+    background-color: #9DD6F2;
+    background-size: 100%;
+    padding: 20px 10px 10px 20px;
+    text-align: center;
+}
+.banner .container {
+    margin-top: 20px;
+    min-height: 200px;
+}
+.banner .container p img{
+    max-width: 220px;
+    height: auto;
+}
+.banner .container h1{
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 100px;
+}
+.banner .container p {
+    color: #FFFFFF;
+    font-size: 100px;
+    font-weight: 300;
+    text-align: center;
+}
+.banner .container h2{
+    font-size: 20px;
+}
+
+.middle {
+    background-color: #FFFFFF;
+}
+.middle .container {
+    background-color: #FFFFFF;
+    padding-top: 20px;
+}
+.middle .container button img{
+    max-width: 10px;
+    height: auto;
+}
+
+.navbar-nav li a {
+    color: #CCC;
+    font-family: 'Arimo', sans-serif;
+    font-size: 20px;
+}
+.navbar-nav li a:hover {
+    background-color: #373737;
+}
+.navbar-nav li a img{
+    background-size: 100% auto;
+    max-width:30px;
+    overflow: hidden;
+    margin-top: -4px;
+}
+
+.bottom {
+    background-color: #275C76;
+    margin-top: 30px;
+    height: 150px;
+}
+.bottom .container {
+    text-align: center;
+    height: 150px;
+    width: 100%;
+    display: table;
+    position:absolute;
+}
+.bottom .container h1 {
+    color: #A09F9F;
+}
+.bottom .container p {
+    font-size: 30px;
+    color: #FFFFFF;
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'Comfortaa', cursive;
+}
+
+.navbar-toggle {
+    color: #009b9b;
+    font-size: 32px;
+    margin: 3px;
+    padding: 2px 5px;
+    line-height: 32px;
+}
+.navbar-toggle:hover {
+    background-color: #373737;
+}
+.navbar-nav {
+    margin: 0;
+    overflow: hidden;
+}

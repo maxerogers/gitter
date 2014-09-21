@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gitwit</title>
+    <title>Git Twit</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
@@ -31,7 +31,7 @@
 	    		<form role="form">
 	  			<div class="form-group">
 	    			<label for="team">Team ID</label>
-	    			<input type="text" class="form-control" name="user_name" id="inputTeam" placeholder="Your Team Name"> <br>
+	    			<input type="text" class="form-control" id="inputTeam" placeholder="Your Team"> <br>
 	    			<label for="github">Github</label>
 	    			<input type="text" class = "form-control" name="github_path" placeholder="Your Github Url">
 	  			</div>
@@ -44,7 +44,7 @@
 	</div>
 	<div class = "bottom">
 		<div class="container">
-			<p>Made by Max Rogers & Philippe Kimura-Thollander @ Unhackathon</p>
+			<p>Made by Max Rogers @ Unhackathon</p>
 		</div>
 	</div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
