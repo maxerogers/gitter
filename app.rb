@@ -193,7 +193,7 @@ def reload_server
     json = JSON.parse(response.body)
     latest_sha = json[0]["sha"]
     if r.last_sha == latest_sha
-      str += "#{r.github_path} is up to date <br><br>" 
+      str += "#{r.github_path} is up to date <br><br>"
     else
       path = "#{api_path}#{repo_path}/compare/#{r.last_sha}...#{latest_sha}?client_id=#{client_id}&client_secret=#{client_secret}"
       str += "#{path} <br><br>"
@@ -201,6 +201,7 @@ def reload_server
       json = JSON.parse(response.body)
       r.last_sha = latest_sha
       r.save
+      str += "#{json['files']}<br><br>"
       if json["files"] == "[]"
         #str += "#{json['files']}<br><br>"
         Language.update_all(hourly_count: 0)
