@@ -192,31 +192,36 @@ def reload_server
     response = HTTParty.get(path, headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
     json = JSON.parse(response.body)
     latest_sha = json[0]["sha"]
-    path = "#{api_path}#{repo_path}/compare/#{r.last_sha}...#{latest_sha}?client_id=#{client_id}&client_secret=#{client_secret}"
-    response = HTTParty.get(path, headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
-    json = JSON.parse(response.body)
-    r.last_sha = latest_sha
-    r.save
-    if json["files"] == "[]"
-      #str += "#{json['files']}<br><br>"
-      Language.update_all(hourly_count: 0)
-      json["files"].each do |f|
-        lang = Language.where(name: what_language?("#{f["filename"]}")).first
-        lang.number_of_lines += f["additions"]
-        lang.hourly_count += f["additions"]
-        str += "#{lang.name} : #{lang.hourly_count} : #{lang.number_of_lines} <br>"
-        lang.save
-      end
-      tweet = "TEST: Max has written "
-      Language.where("hourly_count > 0").find_each.with_index do |l, index|
-        tweet += "#{l.hourly_count} lines in #{l.name}; "
-      end
-      tweet += "in the last hour"
-      $twitter_bot.update(tweet)
-      str += "#{tweet}<br><br>"
-      puts "MAKE A THING"
+    if r.last_sha == latest_sha
+      str += "#{r.github_path} is up to date <br><br>" 
     else
-      str += "json is empty"
+      path = "#{api_path}#{repo_path}/compare/#{r.last_sha}...#{latest_sha}?client_id=#{client_id}&client_secret=#{client_secret}"
+      str += "#{path} <br><br>"
+      response = HTTParty.get(path, headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
+      json = JSON.parse(response.body)
+      r.last_sha = latest_sha
+      r.save
+      if json["files"] == "[]"
+        #str += "#{json['files']}<br><br>"
+        Language.update_all(hourly_count: 0)
+        json["files"].each do |f|
+          lang = Language.where(name: what_language?("#{f["filename"]}")).first
+          lang.number_of_lines += f["additions"]
+          lang.hourly_count += f["additions"]
+          str += "#{lang.name} : #{lang.hourly_count} : #{lang.number_of_lines} <br>"
+          lang.save
+        end
+        tweet = "TEST: Max has written "
+        Language.where("hourly_count > 0").find_each.with_index do |l, index|
+          tweet += "#{l.hourly_count} lines in #{l.name}; "
+        end
+        tweet += "in the last hour"
+        $twitter_bot.update(tweet)
+        str += "#{tweet}<br><br>"
+        puts "MAKE A THING"
+      else
+        str += "json is empty <br><br>"
+      end
     end
   end
   str
