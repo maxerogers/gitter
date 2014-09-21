@@ -5,7 +5,7 @@ class MetaData < ActiveRecord::Migration
       t.string :last_sha
       t.integer :lines
     end
-    create_table :langauges do |t|
+    create_table :languages do |t|
       t.string :name
       t.integer :number_of_files
       t.integer :number_of_lines

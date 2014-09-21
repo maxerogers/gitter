@@ -16,5 +16,5 @@ end
 
 class Repo < ActiveRecord::Base
 end
-class Langauge < ActiveRecord::Base
+class Language < ActiveRecord::Base
 end

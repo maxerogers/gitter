@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140919004206) do
+ActiveRecord::Schema.define(version: 20140921115922) do
 
-  create_table "langauges", force: true do |t|
+  create_table "languages", force: true do |t|
     t.string  "name"
     t.integer "number_of_files"
     t.integer "number_of_lines"
     t.string  "file_extensions"
+    t.integer "hourly_count"
   end
 
   create_table "repos", force: true do |t|
