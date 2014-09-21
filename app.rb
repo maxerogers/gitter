@@ -202,7 +202,8 @@ def reload_server
       r.last_sha = latest_sha
       r.save
       str += "#{json['files']}<br><br>"
-      if json["files"].empty?
+      #try stringify when you get back
+      if json["files"]
         #str += "#{json['files']}<br><br>"
         Language.update_all(hourly_count: 0)
         json["files"].each do |f|
