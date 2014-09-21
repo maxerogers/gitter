@@ -126,6 +126,46 @@ end
 #json["files"][i]["filename"]
 #json["files"][i]["additions"]
 
+#returns a string. Example "Ruby"
+def what_language? filename
+  test = filename.partition(".").last
+  puts test
+  case test
+  when "rb", "ru", "erb", "slim", "haml"
+    "Ruby"
+  when "py"
+    "Python"
+  when "java", "jsp", "jsf"
+    "Java"
+  when "cpp"
+    "C++"
+  when "m"
+    "Obj-C"
+  when "c"
+    "C"
+  when "js", "coffee"
+    "Javascript"
+  when "html"
+    "Html"
+  when "cs"
+    "C#"
+  when "css", "scss", "less"
+    "CSS"
+  when "php"
+    "PHP"
+  when "md"
+    "Readme"
+  when "hs"
+    "Haskell"
+  when "pm", "pl"
+    "Perl"
+  when ".sh"
+    "Bash/Shell"
+  else
+    "Other"
+  end
+end
+
 def reload_server
   client_id = '5394720ddae7b4107128'
   client_secret = '96a96f7a666b4dfa0708a881c56edac9c702dbb0'
@@ -138,16 +178,28 @@ def reload_server
     response = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c?client_id=5394720ddae7b4107128&client_secret=96a96f7a666b4dfa0708a881c56edac9c702dbb0", headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
     repo_path = r.github_path.partition("https://github.com/").last
     path = "#{api_path}#{repo_path}/commits?client_id=#{client_id}&client_secret=#{client_secret}"
-    str += "#{repo_path} <br><br> #{path} <br><br>"
-    str += "#{response.headers.inspect}<br><br>#{response.body}<br><br>"
+    #str += "#{repo_path} <br><br> #{path} <br><br>"
+    #str += "#{response.headers.inspect}<br><br>#{response.body}<br><br>"
     response = HTTParty.get('https://api.github.com/repos/honeycodedbear/gitter/commits?client_id=5394720ddae7b4107128&client_secret=96a96f7a666b4dfa0708a881c56edac9c702dbb0', headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
-    #json = JSON.parse(response.body)
+    json = JSON.parse(response.body)
     #str += "#{response.headers.inspect}<br><br>"
     #str += "#{path} <br>"
     #latest_sha = json[0]["sha"]
     #str += "#{json[0]} <br>"
     #str += "Last Known Sha: #{r.last_sha} <br> Latest sha: #{latest_sha} <br>"
-    str += "#{response.headers.inspect}<br><br>#{response.body}"
+    #str += "#{response.headers.inspect}<br><br>#{response.body}"
+    #str += "#{json[0]["sha"]}<br><br>"
+    response = HTTParty.get("https://api.github.com/repos/honeycodedbear/gitter/compare/aa5a8bd2c5f5b648ab84344ee3fe90457a3dbb25...b8262a36c765127924b5c424005a695fde02298c?client_id=5394720ddae7b4107128&client_secret=96a96f7a666b4dfa0708a881c56edac9c702dbb0", headers: {"User-Agent" => 'Git Twit', "Accept" => "application/vnd.github.v3+json"})
+    json = JSON.parse(response.body)
+    #str += "#{json["files"][0]}<br><br>"
+    #str += "#{json["files"][0]["filename"]}<br><br>"
+    #str += "#{json["files"][0]["additions"]}<br><br>"
+    #str += "#{json["files"].size}<br><br>"
+    #str += "#{json["files"]["sha"]}<br><br>"
+    json["files"].each do |f|
+      str += "#{f["filename"]} : #{f["additions"]} <br><br>"
+      str += "#{what_language? f["filename"]} <br><br>"
+    end
     if false
     response = HTTParty.get("#{api_path}#{repo_path}/compare/#{r.last_sha}...#{latest_sha}?client_id=#{client_id}&cliend_secret=#{client_secret}", headers: {"User-Agent" => 'Git Twit'})
     json = JSON.parse(reponse.body)
